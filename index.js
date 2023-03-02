@@ -1,12 +1,15 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+// const XLSX = require("xlsx");
 
 const app = express();
 const cors = require("cors");
 const port = 3000;
 
 app.use(cors());
+
+// const workbook = XLSX.utils.book_new();
 
 // puppeteer
 async function run() {
@@ -37,17 +40,19 @@ async function run() {
       return scrapData;
     });
 
+    let dataAsText = "";
+    data.forEach((e) => {
+      dataAsText += `${e.title} \n ${e.userName} \n ${e.links} \n \n`;
+    });
+    console.log(dataAsText);
+
+    fs.appendFileSync("test.txt", dataAsText);
+
     await page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });
     await page.waitForSelector("ul li");
     await page.click(".search-controls-pagination_nav_component__arrowRight");
-
-    console.log(data);
-
-    let writer = fs.createWriteStream("test.txt");
-
-    writer.write(JSON.stringify(data));
   }
   await browser.close();
 }
