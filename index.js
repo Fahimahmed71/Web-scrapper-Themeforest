@@ -19,7 +19,7 @@ async function run() {
     "https://themeforest.net/category/wordpress?sort=sales#content"
   );
 
-  for (let i = 0; i < 60; i++) {
+  for (;;) {
     let data = await page.evaluate(() => {
       let itemGridDivs = document.querySelectorAll(
         ".search-item_cards_container_component__list .shared-item_cards-card_component__root"
